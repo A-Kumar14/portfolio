@@ -137,7 +137,7 @@
       gap: 40px;
     }
     .hero-desc {
-      max-width: 420px;
+      max-width: 480px;
       font-size: 15px;
       line-height: 1.7;
       color: #888;
@@ -252,6 +252,8 @@
     }
     .about-text p + p { margin-top: 20px; }
     .about-text strong { color: var(--text); font-weight: 400; }
+    .about-text a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s; }
+    .about-text a:hover { border-color: var(--accent); }
     .stats-row {
       display: flex;
       gap: 40px;
@@ -298,6 +300,8 @@
       gap: 60px;
       align-items: center;
     }
+    .project-card.full-width { grid-column: span 2; }
+    .project-card.muted { background: transparent; }
     .project-card::before {
       content: '';
       position: absolute;
@@ -329,6 +333,8 @@
       color: #666;
       margin-bottom: 32px;
     }
+    .project-desc a { color: var(--accent); text-decoration: none; }
+    .project-desc a:hover { text-decoration: underline; }
     .tech-stack {
       display: flex;
       flex-wrap: wrap;
@@ -361,6 +367,7 @@
       transition: gap 0.2s;
     }
     .project-link:hover { gap: 14px; }
+    .project-link.disabled { color: var(--muted); cursor: default; }
     .project-visual {
       height: 260px;
       border: 1px solid rgba(232,197,71,0.15);
@@ -445,6 +452,67 @@
       transition: background 0.2s;
     }
     .skill-list li:hover::before { background: var(--accent); }
+    .skills-philosophy {
+      margin-top: 40px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      color: #888;
+      letter-spacing: 0.06em;
+      line-height: 1.7;
+    }
+    .skills-philosophy strong { color: var(--accent); font-weight: 400; }
+
+    /* WRITING */
+    #writing {
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .writing-intro {
+      font-family: 'DM Mono', monospace;
+      font-size: 14px;
+      line-height: 1.9;
+      color: #777;
+      margin-top: 32px;
+    }
+    .writing-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .writing-list a {
+      display: block;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.2s, border-color 0.2s, padding-left 0.2s;
+    }
+    .writing-list a:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+      padding-left: 8px;
+    }
+    .writing-title {
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.4;
+    }
+    .writing-pub {
+      display: block;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 8px;
+    }
 
     /* RESUME */
     #resume { border-top: 1px solid var(--border); }
@@ -452,7 +520,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 40px;
+      gap: 40px;
+      flex-wrap: wrap;
     }
     .resume-heading {
       font-size: clamp(32px, 4vw, 48px);
@@ -461,39 +530,6 @@
       line-height: 1.1;
     }
     .resume-heading em { font-style: normal; color: var(--accent); }
-    .resume-frame-wrap {
-      position: relative;
-      width: 100%;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      overflow: hidden;
-    }
-    .resume-frame-wrap iframe {
-      width: 100%;
-      height: 900px;
-      border: none;
-      display: block;
-    }
-    .resume-toolbar {
-      display: flex;
-      justify-content: flex-end;
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border);
-      background: var(--surface);
-    }
-    .resume-download {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      color: var(--accent);
-      text-decoration: none;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: opacity 0.2s;
-    }
-    .resume-download:hover { opacity: 0.7; }
 
     /* CONTACT */
     #contact {
@@ -575,7 +611,7 @@
       nav { padding: 24px 30px; }
       section { padding: 70px 30px; }
       #hero { padding: 0 30px 60px; }
-      #about, .skills-layout { grid-template-columns: 1fr; gap: 40px; }
+      #about, .skills-layout, #writing { grid-template-columns: 1fr; gap: 40px; }
       .projects-grid, .project-card.featured { grid-template-columns: 1fr; grid-column: span 1; }
       .skills-groups { grid-template-columns: 1fr 1fr; }
       .hero-bottom { flex-direction: column; align-items: flex-start; }
@@ -592,6 +628,7 @@
       <li><a href="#about">About</a></li>
       <li><a href="#projects">Projects</a></li>
       <li><a href="#skills">Skills</a></li>
+      <li><a href="#writing">Writing</a></li>
       <li><a href="#resume">Resume</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
@@ -600,14 +637,14 @@
   <!-- HERO -->
   <section id="hero">
     <div class="hero-grid-bg"></div>
-    <div class="hero-tag">CS Student @ Rutgers · Builder · Problem Solver</div>
+    <div class="hero-tag">Sophomore CS @ Rutgers</div>
     <h1 class="hero-name">
       Arssh<br>
       <span class="line2">Kumar</span>
     </h1>
     <div class="hero-bottom">
       <p class="hero-desc">
-        Computer Science student building full-stack software, from AI platforms to systems-level code.
+        I build AI-integrated products end-to-end — research engines, voice journals, document intelligence platforms.
       </p>
       <div class="hero-cta">
         <a href="#projects" class="btn-primary">View My Work</a>
@@ -621,50 +658,52 @@
     <div class="marquee-track">
       <span>React</span><span class="accent">✦</span>
       <span>FastAPI</span><span class="accent">✦</span>
-      <span>Python</span><span class="accent">✦</span>
-      <span>AI Integration</span><span class="accent">✦</span>
-      <span>C Programming</span><span class="accent">✦</span>
+      <span>SwiftUI</span><span class="accent">✦</span>
+      <span>OpenRouter</span><span class="accent">✦</span>
       <span>ChromaDB</span><span class="accent">✦</span>
-      <span>Computer Architecture</span><span class="accent">✦</span>
-      <span>Full-Stack Dev</span><span class="accent">✦</span>
+      <span>Postgres</span><span class="accent">✦</span>
+      <span>SSE Streaming</span><span class="accent">✦</span>
+      <span>Spec-First</span><span class="accent">✦</span>
       <span>React</span><span class="accent">✦</span>
       <span>FastAPI</span><span class="accent">✦</span>
-      <span>Python</span><span class="accent">✦</span>
-      <span>AI Integration</span><span class="accent">✦</span>
-      <span>C Programming</span><span class="accent">✦</span>
+      <span>SwiftUI</span><span class="accent">✦</span>
+      <span>OpenRouter</span><span class="accent">✦</span>
       <span>ChromaDB</span><span class="accent">✦</span>
-      <span>Computer Architecture</span><span class="accent">✦</span>
-      <span>Full-Stack Dev</span><span class="accent">✦</span>
+      <span>Postgres</span><span class="accent">✦</span>
+      <span>SSE Streaming</span><span class="accent">✦</span>
+      <span>Spec-First</span><span class="accent">✦</span>
     </div>
   </div>
 
   <!-- ABOUT -->
   <section id="about">
     <div class="fade-up">
-      <div class="section-label">About Me</div>
+      <div class="section-label">About</div>
       <h2 class="about-heading">
-        Beginner<br>turned<br><em>Builder.</em>
+        What I<br><em>build.</em>
       </h2>
       <div class="stats-row">
         <div class="stat-item">
-          <div class="num">6<span>+</span></div>
-          <div class="label">Years Coding</div>
+          <div class="num">169</div>
+          <div class="label">Tests in Quarry suite</div>
         </div>
         <div class="stat-item">
-          <div class="num">4<span>+</span></div>
-          <div class="label">Projects Shipped</div>
+          <div class="num">5</div>
+          <div class="label">Published columns</div>
         </div>
         <div class="stat-item">
           <div class="num">20<span>28</span></div>
-          <div class="label">Expected Graduation</div>
+          <div class="label">Expected graduation</div>
         </div>
       </div>
     </div>
     <div class="fade-up" style="padding-top: 80px;">
       <div class="about-text">
-        <p>Computer Science student at <strong>Rutgers University</strong> with a focus on building production-grade software. I design and ship full-stack systems end-to-end, from architecture decisions to deployed product.</p>
-        <p><strong>FileGeek</strong> is my flagship project: an AI document intelligence platform with zero-hallucination enforcement, semantic search, and a multi-provider AI engine, built with FastAPI, React, and ChromaDB.</p>
-        <p>I build with <strong>Claude Code</strong>, <strong>Cursor</strong>, and <strong>Antigravity AI</strong> as part of my standard workflow. The architecture, the decisions, and the code are mine.</p>
+        <p>I'm a sophomore at <strong>Rutgers University</strong> studying Computer Science. I ship AI-integrated SaaS — full-stack, opinionated, end-to-end. Architecture decisions, code, deploy. All mine.</p>
+        <p>My current focus is <strong>Quarry</strong>, a multi-model research engine for journalists with contradiction detection, source provenance, and a custom finance query language (QFL). Before that, I built <strong>PDFGeek</strong> during my software engineering internship at TrialX, and <strong>FileGeek</strong>, the document intelligence platform Quarry evolved out of.</p>
+        <p>I'm also building <strong>Engel</strong>, a SwiftUI iOS journaling app structured as a digital examen rather than a mood tracker.</p>
+        <p>I write a recurring column on technology and AI policy for <strong>Rising Kashmir</strong> and have published on <strong>News18</strong>, mostly on unintended consequences in tech and national security.</p>
+        <p>My workflow is <strong>Claude Code</strong>, <strong>Cursor</strong>, <strong>Antigravity</strong>, and <strong>Warp</strong> — spec-first, one feature at a time, plan mode before implementation.</p>
       </div>
     </div>
   </section>
@@ -674,79 +713,108 @@
     <div class="section-label">Work</div>
     <div class="projects-grid">
 
-      <!-- FEATURED: FileGeek -->
-      <div class="project-card featured fade-up" id="card-fg">
+      <!-- FEATURED: Quarry -->
+      <div class="project-card featured fade-up" id="card-quarry">
         <div>
           <div class="project-num">01 — Featured</div>
-          <h3 class="project-title">FileGeek</h3>
+          <h3 class="project-title">Quarry</h3>
           <p class="project-desc">
-            An AI Document Intelligence Platform with zero-hallucination enforcement, semantic search, and multi-provider AI engine. Built from scratch — FastAPI backend, React frontend, ChromaDB vector store.
+            An epistemic research engine for journalists. Runs queries across multiple LLMs through OpenRouter, surfaces contradictions between sources, tracks provenance, and ships with QFL — a custom query language I designed for finance research. SSE streaming, multi-tab UI, 169-test suite.
           </p>
           <div class="tech-stack">
+            <span class="tag">React 18</span>
             <span class="tag">FastAPI</span>
-            <span class="tag">React</span>
             <span class="tag">ChromaDB</span>
-            <span class="tag">Python</span>
-            <span class="tag">SSE Streaming</span>
-            <span class="tag">Multi-AI</span>
+            <span class="tag">OpenRouter</span>
+            <span class="tag">SSE</span>
+            <span class="tag">Postgres</span>
           </div>
-          <div style="display:flex; gap: 24px; align-items: center;">
-            <a href="https://filegeek.vercel.app" target="_blank" class="project-link" style="color: var(--accent); font-weight: 700;">Live Demo →</a>
-            <a href="https://github.com/A-Kumar14/FileGeek" target="_blank" class="project-link">View on GitHub →</a>
+          <div style="display:flex; gap: 24px; align-items: center; flex-wrap: wrap;">
+            <a href="https://quarry-one.vercel.app/signup" target="_blank" class="project-link" style="color: var(--accent); font-weight: 700;">Live Demo →</a>
+            <a href="https://github.com/A-Kumar14/Quarry" target="_blank" class="project-link">View on GitHub →</a>
           </div>
         </div>
         <div class="project-visual">
-          <img src="image.png" alt="FileGeek Preview" />
+          <img src="image.png" alt="Quarry Preview" />
           <div class="project-visual-overlay"></div>
-          <a href="https://filegeek.vercel.app" target="_blank" aria-label="Open FileGeek"></a>
+          <a href="https://quarry-one.vercel.app/signup" target="_blank" aria-label="Open Quarry"></a>
         </div>
       </div>
 
-      <!-- Project 2: ProjectX -->
-      <div class="project-card fade-up" id="card-2">
+      <!-- 02: Engel -->
+      <div class="project-card fade-up" id="card-engel">
         <div class="project-num">02</div>
-        <h3 class="project-title">ProjectX</h3>
+        <h3 class="project-title">Engel</h3>
         <p class="project-desc">
-          AI-driven trading strategy using Lumibot and Alpaca. Automates market decisions with machine learning signals and live brokerage integration.
+          A SwiftUI iOS app structured as a digital examen, not a mood tracker. Two overlapping globes (positive/negative) capture 30-second voice memos. AI auto-tags silently. The forced binary sort is the reflective practice. The app surfaces consequences and patterns inline rather than as weekly drips.
         </p>
         <div class="tech-stack">
-          <span class="tag">Python</span>
-          <span class="tag">Lumibot</span>
-          <span class="tag">Alpaca API</span>
-          <span class="tag">AI</span>
+          <span class="tag">SwiftUI</span>
+          <span class="tag">FastAPI</span>
+          <span class="tag">Postgres</span>
+          <span class="tag">Whisper</span>
+          <span class="tag">Claude Code</span>
         </div>
-        <a href="https://github.com/A-Kumar14/ProjectX" target="_blank" class="project-link">View on GitHub →</a>
+        <span class="project-link disabled">In Development</span>
       </div>
 
-      <!-- Project 3: SPAM Detector -->
-      <div class="project-card fade-up" id="card-3">
+      <!-- 03: Degree Tool -->
+      <div class="project-card fade-up" id="card-degree">
         <div class="project-num">03</div>
-        <h3 class="project-title">SPAM Detector</h3>
+        <h3 class="project-title">Rutgers Degree Optimization Tool</h3>
         <p class="project-desc">
-          ML-powered spam detection that integrates directly with Gmail via IMAP. Classifies emails with confidence ratings — no manual filtering needed.
+          Computes the minimum graduation course path using set cover optimization on ScarletSync degree audit data. Built with a partner. Solves a real problem most Rutgers CS students hand-solve in spreadsheets.
         </p>
         <div class="tech-stack">
           <span class="tag">Python</span>
-          <span class="tag">Machine Learning</span>
-          <span class="tag">IMAP</span>
-          <span class="tag">Gmail API</span>
+          <span class="tag">Set Cover</span>
+          <span class="tag">Web Scraping</span>
         </div>
-        <a href="https://github.com/A-Kumar14/SPAM-Detector" target="_blank" class="project-link">View on GitHub →</a>
+        <a href="https://github.com/A-Kumar14" target="_blank" class="project-link">View on GitHub →</a>
       </div>
 
-      <!-- Project 4: Note Manager -->
-      <div class="project-card fade-up" id="card-4">
+      <!-- 04: PDFGeek -->
+      <div class="project-card fade-up" id="card-pdfgeek">
         <div class="project-num">04</div>
-        <h3 class="project-title">Note Manager</h3>
+        <h3 class="project-title">PDFGeek (TrialX)</h3>
         <p class="project-desc">
-          JavaFX desktop app for managing notes with reminders, priority-based scheduling, and AI-powered features.
+          Built during my software engineering internship at TrialX. Document processing and intelligence platform for clinical trial workflows — production Python pipeline parsing trial documents at scale, deployed by a four-engineer team.
         </p>
         <div class="tech-stack">
-          <span class="tag">Java</span>
-          <span class="tag">JavaFX</span>
-          <span class="tag">AI</span>
+          <span class="tag">FastAPI</span>
+          <span class="tag">Python</span>
+          <span class="tag">PyMuPDF</span>
+          <span class="tag">REST APIs</span>
         </div>
-        <a href="https://github.com/A-Kumar14/Note-Manager" target="_blank" class="project-link">View on GitHub →</a>
+      </div>
+
+      <!-- 05: FileGeek -->
+      <div class="project-card fade-up" id="card-fg">
+        <div class="project-num">05</div>
+        <h3 class="project-title">FileGeek</h3>
+        <p class="project-desc">
+          The document intelligence platform Quarry evolved out of. Zero-hallucination enforcement, semantic search, multi-provider AI engine. Built solo from scratch.
+        </p>
+        <div class="tech-stack">
+          <span class="tag">FastAPI</span>
+          <span class="tag">React</span>
+          <span class="tag">ChromaDB</span>
+          <span class="tag">GPT-4o</span>
+          <span class="tag">Gemini</span>
+          <span class="tag">SSE</span>
+        </div>
+        <div style="display:flex; gap: 24px; align-items: center; flex-wrap: wrap;">
+          <a href="https://filegeek.vercel.app" target="_blank" class="project-link" style="color: var(--accent); font-weight: 700;">Live Demo →</a>
+          <a href="https://github.com/A-Kumar14/FileGeek" target="_blank" class="project-link">View on GitHub →</a>
+        </div>
+      </div>
+
+      <!-- Earlier work -->
+      <div class="project-card full-width muted fade-up" id="card-earlier">
+        <div class="project-num">Earlier work</div>
+        <p class="project-desc" style="margin: 0;">
+          Stock Market AI (pandas, scikit-learn, TensorFlow), iOS football app (Swift, Sportmonks API), Soccer Data Analyzer, Note Manager (JavaFX). On <a href="https://github.com/A-Kumar14" target="_blank">GitHub</a>.
+        </p>
       </div>
 
     </div>
@@ -757,61 +825,104 @@
     <div class="section-label">Skills & Stack</div>
     <div class="skills-layout fade-up">
       <div>
-        <h2 class="skills-intro">Tools I<br><em>actually</em><br>know.</h2>
+        <h2 class="skills-intro">Stack I<br><em>ship</em><br>with.</h2>
       </div>
-      <div class="skills-groups">
-        <div>
-          <div class="skill-group-title">Languages</div>
-          <ul class="skill-list">
-            <li>Python</li>
-            <li>JavaScript</li>
-            <li>C</li>
-            <li>SQL</li>
-            <li>HTML/CSS</li>
-          </ul>
+      <div>
+        <div class="skills-groups">
+          <div>
+            <div class="skill-group-title">Languages</div>
+            <ul class="skill-list">
+              <li>Python</li>
+              <li>JavaScript / TypeScript</li>
+              <li>Swift</li>
+              <li>C</li>
+              <li>SQL</li>
+            </ul>
+          </div>
+          <div>
+            <div class="skill-group-title">Frameworks</div>
+            <ul class="skill-list">
+              <li>React 18</li>
+              <li>FastAPI</li>
+              <li>SwiftUI</li>
+              <li>Node.js</li>
+            </ul>
+          </div>
+          <div>
+            <div class="skill-group-title">Infra & Data</div>
+            <ul class="skill-list">
+              <li>Postgres</li>
+              <li>ChromaDB</li>
+              <li>SSE / Async</li>
+              <li>REST</li>
+              <li>Git</li>
+            </ul>
+          </div>
+          <div>
+            <div class="skill-group-title">AI</div>
+            <ul class="skill-list">
+              <li>OpenRouter</li>
+              <li>OpenAI API</li>
+              <li>Gemini</li>
+              <li>Claude API</li>
+              <li>Whisper</li>
+              <li>Custom prompt pipelines</li>
+            </ul>
+          </div>
+          <div>
+            <div class="skill-group-title">Workflow</div>
+            <ul class="skill-list">
+              <li>Claude Code</li>
+              <li>Cursor</li>
+              <li>Antigravity</li>
+              <li>Warp</li>
+            </ul>
+          </div>
         </div>
-        <div>
-          <div class="skill-group-title">Frameworks</div>
-          <ul class="skill-list">
-            <li>React</li>
-            <li>FastAPI</li>
-            <li>Node.js</li>
-            <li>REST APIs</li>
-            <li>SSE / Async</li>
-          </ul>
-        </div>
-        <div>
-          <div class="skill-group-title">Tools & Infra</div>
-          <ul class="skill-list">
-            <li>ChromaDB</li>
-            <li>Git / GitHub</li>
-            <li>PostgreSQL</li>
-            <li>APIs</li>
-            <li>Linux / Bash</li>
-          </ul>
-        </div>
+        <p class="skills-philosophy"><strong>Spec-first.</strong> Plan mode before implementation.</p>
       </div>
+    </div>
+  </section>
+
+  <!-- WRITING -->
+  <section id="writing">
+    <div class="fade-up">
+      <div class="section-label">Writing</div>
+      <h2 class="about-heading">On tech<br>& <em>policy.</em></h2>
+      <p class="writing-intro">
+        I write on technology, AI policy, and unintended consequences in national security infrastructure. Recurring column in Rising Kashmir; bylines in News18.
+      </p>
+    </div>
+    <div class="fade-up" style="padding-top: 80px;">
+      <ul class="writing-list">
+        <li>
+          <a href="https://risingkashmir.com/the-inference-trap-ai-capex-boom-locking-in-permanent-dependency" target="_blank">
+            <span class="writing-title">The Inference Trap: AI Capex Boom Locking In Permanent Dependency</span>
+            <span class="writing-pub">Rising Kashmir</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://risingkashmir.com/space-travel-evolution-when-ai-leaves-earth" target="_blank">
+            <span class="writing-title">Space Travel Evolution: When AI Leaves Earth</span>
+            <span class="writing-pub">Rising Kashmir</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.news18.com/byline/arssh-kumar-28582.html" target="_blank">
+            <span class="writing-title">More clips →</span>
+            <span class="writing-pub">News18 author page</span>
+          </a>
+        </li>
+      </ul>
     </div>
   </section>
 
   <!-- RESUME -->
   <section id="resume">
+    <div class="section-label">Resume</div>
     <div class="resume-header fade-up">
-      <div>
-        <div class="section-label">Resume</div>
-        <h2 class="resume-heading">My <em>background,</em><br>on one page.</h2>
-      </div>
-      <a href="https://docs.google.com/document/d/1MW3AMY8sbOxtUOK2MjtoioqBQj7QLcza/export?format=pdf" target="_blank" class="btn-primary">Download PDF</a>
-    </div>
-    <div class="resume-frame-wrap fade-up">
-      <div class="resume-toolbar">
-        <a href="https://docs.google.com/document/d/1MW3AMY8sbOxtUOK2MjtoioqBQj7QLcza/export?format=pdf" target="_blank" class="resume-download">↓ Download PDF</a>
-      </div>
-      <iframe
-        src="https://docs.google.com/document/d/1MW3AMY8sbOxtUOK2MjtoioqBQj7QLcza/preview"
-        title="Arssh Kumar Resume"
-        allowfullscreen
-      ></iframe>
+      <h2 class="resume-heading">Resume.</h2>
+      <a href="./ARSSH_KUMAR_RESUME.pdf" target="_blank" class="btn-primary">Download PDF →</a>
     </div>
   </section>
 
@@ -821,10 +932,10 @@
     <h2 class="contact-heading">
       Let's<br><span>Work.</span>
     </h2>
-    <a href="mailto:arssh.kumar10@gmail.com" class="btn-primary" style="display:inline-block; margin-top: 8px;">Email Me! →</a>
+    <a href="mailto:arsshdev19@gmail.com" class="btn-primary" style="display:inline-block; margin-top: 8px;">Email Me! →</a>
     <div class="contact-links">
       <a href="https://github.com/A-Kumar14" target="_blank" class="contact-link">GitHub</a>
-      <a href="https://www.linkedin.com/in/arssh-kumar14" target="_blank" class="contact-link">LinkedIn</a>
+      <a href="https://www.linkedin.com/in/arssh-kumar14/" target="_blank" class="contact-link">LinkedIn</a>
     </div>
   </section>
 
