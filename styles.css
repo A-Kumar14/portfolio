@@ -1,0 +1,751 @@
+/* =========================================================================
+   Arssh Kumar — editorial index
+   Tokens are canonical. Dark "ink" is default; light "paper" via [data-theme].
+   Motion is the spine: one continuous, choreographed scroll. All of it
+   degrades to static under prefers-reduced-motion (see the bottom of file).
+   ========================================================================= */
+
+:root,
+[data-theme="dark"] {
+  --paper:        #0e1117;
+  --paper-raised: #151a22;
+  --ink:          #e9e6dc;
+  --ink-dim:      #9aa0a6;
+  --ink-faint:    #5d646c;
+  --rule:         #262d36;
+  --accent:       #d98c3f;
+
+  /* live scroll telemetry, written by main.js */
+  --sy: 0px;        /* window.scrollY in px            */
+  --p:  0;          /* page scroll progress 0..1        */
+  --ease: cubic-bezier(0.22, 0.7, 0.16, 1); /* soft, no bounce */
+}
+
+[data-theme="light"] {
+  --paper:        #e7e6df;
+  --paper-raised: #dedcd2; /* derived cool stone, slightly off --paper */
+  --ink:          #16191e;
+  --ink-dim:      #585e64;
+  --ink-faint:    #8c9298;
+  --rule:         #cfcdc3;
+  --accent:       #b16a25;
+}
+
+/* --- Reset / base ------------------------------------------------------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Fraunces", Georgia, "Times New Roman", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-size: clamp(1rem, 0.92rem + 0.4vw, 1.125rem);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background-color 0.5s ease, color 0.5s ease;
+  overflow-x: hidden;
+}
+
+a { color: inherit; }
+
+::selection {
+  background: var(--accent);
+  color: var(--paper);
+}
+
+/* =========================================================================
+   BACKGROUND DEPTH PLANE — the slowest layer of the camera move.
+   A fine dot grid that drifts, plus an accent glow that tracks progress.
+   ========================================================================= */
+.bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.bg__grid {
+  position: absolute;
+  inset: -25vh -10vw;
+  background-image: radial-gradient(var(--rule) 1px, transparent 1.4px);
+  background-size: 58px 58px;
+  opacity: 0.55;
+  will-change: transform;
+  transform: translate3d(0, var(--grid-y, 0px), 0);
+}
+.bg__glow {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 120vmax;
+  height: 120vmax;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--accent) 14%, transparent),
+    transparent 62%
+  );
+  opacity: 0.5;
+  will-change: transform, opacity;
+  transform: translate3d(-50%, var(--glow-y, -45%), 0);
+}
+
+/* --- Skip link (a11y) --------------------------------------------------- */
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -3.5rem;
+  z-index: 100;
+  padding: 0.5rem 0.875rem;
+  background: var(--accent);
+  color: var(--paper);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.8rem;
+  text-decoration: none;
+  border-radius: 2px;
+  transition: top 0.2s ease;
+}
+.skip-link:focus { top: 1rem; }
+
+/* --- Focus visibility (a11y) -------------------------------------------- */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+/* --- Mono utility (index numbers, kickers, metadata) -------------------- */
+.kicker,
+.kicker__num,
+.rail,
+.entry__meta,
+.entry__links,
+.stack,
+.labels__tag,
+.toolkit__label,
+.now-list dt,
+.channels__label,
+.vitals dt,
+.theme-toggle,
+.footer {
+  font-family: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+/* --- Top scroll-progress hairline (behavior 3) -------------------------- */
+.progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  transform: scaleX(var(--p, 0));
+  transform-origin: 0 50%;
+  background: var(--accent);
+  z-index: 90;
+  will-change: transform;
+}
+
+/* --- Day/Night toggle --------------------------------------------------- */
+.theme-toggle {
+  position: fixed;
+  top: 1.25rem;
+  right: 1.5rem;
+  z-index: 80;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5ch;
+  padding: 0.5rem 0.875rem;
+  background: color-mix(in oklab, var(--paper-raised) 86%, transparent);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: var(--ink-dim);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.theme-toggle:hover { color: var(--ink); border-color: var(--ink-faint); }
+.theme-toggle__label::before {
+  content: "◗";
+  margin-right: 0.5ch;
+  color: var(--accent);
+}
+
+/* --- Left rail / section tracker — frosted capsule ---------------------- */
+.rail {
+  position: fixed;
+  left: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5rem;
+  max-height: calc(100vh - 3rem);
+  padding: 1.4rem 1rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in oklab, var(--ink) 8%, transparent);
+  border-radius: 30px;
+  background: color-mix(in oklab, var(--paper-raised) 62%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  backdrop-filter: blur(16px) saturate(1.3);
+  box-shadow:
+    0 24px 60px -18px rgba(0, 0, 0, 0.55),
+    0 2px 10px -4px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 color-mix(in oklab, var(--ink) 10%, transparent);
+  display: flex;
+  flex-direction: column;
+  z-index: 70;
+  transition: width 0.5s var(--ease);
+}
+.rail:hover,
+.rail:focus-within { width: 15.5rem; }
+[data-theme="light"] .rail {
+  border-color: color-mix(in oklab, var(--ink) 6%, transparent);
+  box-shadow:
+    0 26px 60px -20px rgba(60, 55, 45, 0.35),
+    0 2px 8px -3px rgba(60, 55, 45, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+.rail__title {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}
+.rail__list {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+/* the moving pill — glides behind the active entry */
+.rail__marker {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 0;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--paper-raised) 75%, var(--ink) 4%);
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, var(--ink) 8%, transparent),
+    0 6px 16px -8px rgba(0, 0, 0, 0.5);
+  transform: translateY(var(--marker-y, 0px));
+  transition: transform 0.5s var(--ease), height 0.5s var(--ease),
+              opacity 0.4s ease;
+  opacity: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+[data-theme="light"] .rail__marker {
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 6px 16px -8px rgba(60, 55, 45, 0.25);
+}
+.rail__marker.is-ready { opacity: 1; }
+
+.rail__list a {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 0.62rem 0.8rem;
+  text-decoration: none;
+  color: var(--ink-dim);
+  border-radius: 999px;
+  transition: color 0.3s ease;
+}
+.rail__num {
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-dim);
+  transition: color 0.3s ease;
+  font-variant-numeric: tabular-nums;
+  flex: 0 0 auto;
+}
+/* the connector dash between number and label — collapses with the label */
+.rail__name {
+  display: flex;
+  align-items: center;
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--ink-dim);
+  margin-left: 0;
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: color 0.3s ease, max-width 0.5s var(--ease),
+              opacity 0.35s ease, margin-left 0.5s var(--ease);
+}
+.rail:hover .rail__name,
+.rail:focus-within .rail__name {
+  margin-left: 0.85rem;
+  max-width: 12rem;
+  opacity: 1;
+}
+.rail__name::before {
+  content: "";
+  width: 1.35rem;
+  height: 1px;
+  margin-right: 0.85rem;
+  background: color-mix(in oklab, var(--ink) 32%, transparent);
+  transition: background-color 0.3s ease, width 0.4s var(--ease);
+  flex: 0 0 auto;
+}
+.rail__list a:hover .rail__num,
+.rail__list a:hover .rail__name { color: var(--ink); }
+
+/* Active rail item (scroll-spy, behavior 1) */
+.rail__list a.is-active .rail__num { color: var(--accent); }
+.rail__list a.is-active .rail__name { color: var(--ink); }
+.rail__list a.is-active .rail__name::before {
+  background: var(--accent);
+  width: 1.6rem;
+}
+
+/* --- Content layout ----------------------------------------------------- */
+.content {
+  max-width: 64ch;
+  margin: 0 auto;
+  padding: 7rem 1.5rem 4rem;
+}
+
+@media (min-width: 1024px) {
+  .content {
+    margin-left: 17.5rem;
+    padding-left: clamp(1.5rem, 4vw, 4rem);
+    padding-right: 2rem;
+  }
+}
+
+/* --- Sections ----------------------------------------------------------- */
+.section {
+  position: relative;
+  padding: 5.5rem 0;
+}
+/* the divider as an editorial wipe — drawn across on enter */
+.section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--rule);
+  transform: scaleX(1);
+  transform-origin: 0 50%;
+  transition: transform 1s var(--ease);
+}
+.js .section::before { transform: scaleX(0); }
+.section.is-in::before { transform: scaleX(1); }
+.section:first-child::before { display: none; }
+.section:first-child { padding-top: 1rem; }
+.section--intro { min-height: 90vh; display: flex; flex-direction: column; justify-content: center; }
+
+/* --- Kicker (mono section label) ---------------------------------------- */
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.85ch;
+  margin: 0 0 1.75rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.kicker__num { color: var(--accent); font-variant-numeric: tabular-nums; }
+
+/* =========================================================================
+   HERO — the signature moment. Lines mask-reveal up on load, then
+   parallax-drift at different rates as the camera moves past them.
+   ========================================================================= */
+.hero {
+  margin: 0 0 1.75rem;
+  font-weight: 350;
+  line-height: 0.96;
+  letter-spacing: -0.02em;
+  font-size: clamp(3.5rem, 12vw, 8.5rem);
+}
+.hero__line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em; /* room for descenders inside the mask */
+  will-change: transform;
+}
+.hero__inner {
+  display: block;
+}
+.js .hero__inner {
+  transform: translateY(110%);
+  transition: transform 1.05s var(--ease);
+}
+.hero.is-in .hero__inner { transform: translateY(0); }
+.hero__line:nth-child(2) .hero__inner { transition-delay: 0.13s; }
+.hero__line:last-child {
+  color: var(--ink-dim);
+  font-style: italic;
+}
+.hero__thesis {
+  font-size: clamp(1.3rem, 1rem + 1.4vw, 1.9rem);
+  line-height: 1.32;
+  font-weight: 350;
+  margin: 0 0 1.5rem;
+  max-width: 28ch;
+  text-wrap: balance;
+}
+.hero__thesis em { color: var(--accent); font-style: italic; }
+.lede {
+  color: var(--ink-dim);
+  margin: 0 0 1.75rem;
+}
+
+/* --- Section titles ----------------------------------------------------- */
+.section__title {
+  font-weight: 400;
+  font-size: clamp(1.7rem, 1.3rem + 1.6vw, 2.5rem);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  margin: 0 0 1.75rem;
+  text-wrap: balance;
+}
+.section__date {
+  color: var(--ink-faint);
+  font-style: italic;
+  font-size: 0.7em;
+}
+
+/* --- Prose -------------------------------------------------------------- */
+.prose p,
+.prose { margin: 0 0 1.1rem; }
+.prose p:last-child { margin-bottom: 0; }
+
+/* --- Link with arrow ---------------------------------------------------- */
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5ch;
+  text-decoration: none;
+  color: var(--accent);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease, gap 0.25s var(--ease);
+  font-style: italic;
+}
+.link-arrow:hover { border-bottom-color: var(--accent); gap: 0.95ch; }
+
+/* --- Vitals ------------------------------------------------------------- */
+.vitals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.5rem 3rem;
+  margin: 3rem 0 0;
+  padding-top: 2rem;
+  border-top: 1px solid var(--rule);
+}
+.vitals__item { margin: 0; }
+.vitals dt {
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 0.4rem;
+}
+.vitals dd { margin: 0; font-size: 1rem; }
+
+/* --- Profile: portrait + prose ------------------------------------------ */
+.profile-grid { display: flex; flex-direction: column; gap: 2rem; }
+@media (min-width: 680px) {
+  .profile-grid { flex-direction: row-reverse; align-items: flex-start; gap: 2.75rem; }
+  .profile-grid .prose { flex: 1; }
+}
+.portrait { margin: 0; flex: 0 0 auto; width: 200px; }
+@media (min-width: 680px) { .portrait { width: 230px; } }
+.portrait img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 2px;
+  border: 1px solid var(--rule);
+  filter: grayscale(0.18) contrast(1.02);
+  transition: filter 0.5s var(--ease);
+}
+.portrait img:hover { filter: none; }
+.portrait figcaption {
+  margin-top: 0.7rem;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* --- Work / writing entries --------------------------------------------- */
+.entry { padding: 1.75rem 0; border-top: 1px solid var(--rule); }
+.section .entry:first-of-type { border-top: none; padding-top: 0.5rem; }
+.entry__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1.25rem;
+  margin-bottom: 0.85rem;
+}
+.entry__title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 450;
+  letter-spacing: -0.01em;
+}
+.entry__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6ch;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.entry__sep { color: var(--ink-faint); }
+.entry__status--build { color: var(--accent); }
+.entry__status--archived { color: var(--ink-faint); }
+.entry__body { margin: 0 0 1rem; }
+.entry__source { color: var(--ink-faint); }
+
+/* per-entry source / live links */
+.entry__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin: 0 0 1rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.entry__links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5ch;
+  color: var(--ink-dim);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 1px;
+  transition: color 0.2s ease, border-color 0.2s ease, gap 0.25s var(--ease);
+}
+.entry__links a:hover { color: var(--accent); border-bottom-color: var(--accent); gap: 0.85ch; }
+.entry__links a::after { content: "↗"; color: var(--ink-faint); transition: color 0.2s ease; }
+.entry__links a:hover::after { color: var(--accent); }
+
+/* writing list */
+.writing-list { list-style: none; margin: 0; padding: 0; }
+.entry--link { padding: 1.5rem 0; }
+.entry__title-link {
+  font-size: 1.35rem;
+  font-weight: 450;
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  transition: border-color 0.2s ease;
+}
+.entry__title-link:hover { border-bottom-color: var(--accent); }
+
+/* --- Stack lists -------------------------------------------------------- */
+.stack {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.5rem;
+  margin: 0;
+  padding: 0;
+}
+.stack li {
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-dim);
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+}
+
+/* --- Off the clock labels ----------------------------------------------- */
+.labels { list-style: none; margin: 0; padding: 0; }
+.labels li {
+  display: flex;
+  align-items: baseline;
+  gap: 1.25ch;
+  padding: 0.7rem 0;
+  border-top: 1px solid var(--rule);
+}
+.labels li:first-child { border-top: none; }
+.labels__tag {
+  flex: 0 0 6.5rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* --- Toolkit ------------------------------------------------------------ */
+.toolkit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 2.5rem 2rem;
+}
+.toolkit__group { margin: 0; }
+.toolkit__label {
+  margin: 0 0 1rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--rule);
+}
+.toolkit .stack { flex-direction: column; gap: 0.55rem; }
+.toolkit .stack li {
+  border: none;
+  padding: 0;
+  font-size: 0.95rem;
+  font-family: "Fraunces", serif;
+  color: var(--ink);
+}
+
+/* --- Now list ----------------------------------------------------------- */
+.now-list { margin: 0; }
+.now-list__row {
+  display: grid;
+  grid-template-columns: 7rem 1fr;
+  gap: 1rem;
+  align-items: baseline;
+  padding: 1.1rem 0;
+  border-top: 1px solid var(--rule);
+}
+.now-list__row:first-child { border-top: none; }
+.now-list dt {
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.now-list dd { margin: 0; }
+.now-list__row--lead dd { color: var(--ink); font-size: 1.15rem; }
+.now-list__row--lead dt { color: var(--accent); }
+
+/* --- Contact channels --------------------------------------------------- */
+.channels { list-style: none; margin: 0; padding: 0; }
+.channels li {
+  display: grid;
+  grid-template-columns: 7rem 1fr;
+  gap: 1rem;
+  align-items: baseline;
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--rule);
+}
+.channels li:first-child { border-top: none; }
+.channels__label {
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.channels a {
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  transition: border-color 0.2s ease;
+}
+.channels a:hover { border-bottom-color: var(--accent); }
+
+/* --- Placeholder / EDIT markers ----------------------------------------- */
+[data-edit] {
+  outline: 1px dashed var(--ink-faint);
+  outline-offset: 2px;
+  opacity: 0.7;
+}
+.placeholder { color: var(--ink-faint); font-style: italic; }
+
+/* --- Footer ------------------------------------------------------------- */
+.footer {
+  position: relative;
+  border-top: 1px solid var(--rule);
+  padding: 2.5rem 1.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+  text-align: center;
+}
+@media (min-width: 1024px) {
+  .footer { margin-left: 17.5rem; }
+}
+
+/* =========================================================================
+   REVEAL-ON-ENTER (behavior 2) — fade + rise, staggered within a section
+   via --d set in main.js so each section assembles like a sequence.
+   ========================================================================= */
+.reveal {
+  opacity: 1;
+  transform: none;
+}
+.js .reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.85s var(--ease), transform 0.85s var(--ease);
+  transition-delay: var(--d, 0s);
+}
+.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* =========================================================================
+   RESPONSIVE
+   ========================================================================= */
+@media (max-width: 1023.98px) {
+  .rail { display: none; }
+  .theme-toggle { top: 1rem; right: 1rem; }
+  .content { padding-top: 5rem; }
+  .now-list__row,
+  .channels li { grid-template-columns: 6rem 1fr; }
+  .labels__tag { flex-basis: 5.5rem; }
+}
+
+@media (max-width: 480px) {
+  .now-list__row,
+  .channels li {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+  .labels li { flex-direction: column; gap: 0.25rem; }
+  .labels__tag { flex-basis: auto; }
+  .vitals { gap: 1.75rem 2rem; }
+}
+
+/* =========================================================================
+   REDUCED MOTION — everything resolves to its final, static state.
+   ========================================================================= */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  body { transition: none; }
+  .bg__grid, .bg__glow { transform: none !important; }
+  .js .hero__inner { transform: none; transition: none; }
+  .js .section::before { transform: scaleX(1); transition: none; }
+  .js .reveal { opacity: 1; transform: none; transition: none; }
+  .rail__marker { transition: opacity 0.3s ease; }
+  .rail, .rail__name { transition: none; }
+  .rail__list a, .progress { transition: none; }
+}

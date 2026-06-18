@@ -1,983 +1,446 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>AK — Portfolio</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arssh Kumar — Index</title>
+  <meta name="description" content="Arssh Kumar — Computer Science junior at Rutgers and full-stack AI product builder. I build, and I write. An index of work, experience, writing, and tools." />
 
-    :root {
-      --bg: #0a0a0a;
-      --surface: #111111;
-      --border: #1e1e1e;
-      --text: #f0ede8;
-      --muted: #555;
-      --accent: #e8c547;
-      --accent2: #ff6b35;
-    }
+  <!-- Fonts: Fraunces (display + reading, optical sizing) + IBM Plex Mono (index numbers, kickers, metadata) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
 
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Syne', sans-serif;
-      overflow-x: hidden;
-    }
-
-/* NOISE TEXTURE */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 1000;
-      opacity: 0.4;
-    }
-
-    /* NAV */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      padding: 28px 60px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 100;
-      mix-blend-mode: normal;
-    }
-    nav::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, rgba(10,10,10,0.95) 0%, transparent 100%);
-      z-index: -1;
-    }
-    .nav-logo {
-      font-size: 18px;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      color: var(--text);
-      text-decoration: none;
-    }
-    .nav-logo span { color: var(--accent); }
-    .nav-links {
-      display: flex;
-      gap: 40px;
-      list-style: none;
-    }
-    .nav-links a {
-      font-family: 'DM Mono', monospace;
-      font-size: 12px;
-      color: var(--muted);
-      text-decoration: none;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--text); }
-
-    /* HERO */
-    #hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 0 60px 80px;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-grid-bg {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(var(--border) 1px, transparent 1px),
-        linear-gradient(90deg, var(--border) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 0%, transparent 100%);
-      opacity: 0.4;
-    }
-    .hero-tag {
-      font-family: 'DM Mono', monospace;
-      font-size: 12px;
-      color: var(--accent);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 24px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .hero-tag::before {
-      content: '';
-      display: inline-block;
-      width: 24px; height: 1px;
-      background: var(--accent);
-    }
-    .hero-name {
-      font-size: clamp(72px, 11vw, 160px);
-      font-weight: 800;
-      line-height: 0.9;
-      letter-spacing: -0.04em;
-      margin-bottom: 40px;
-    }
-    .hero-name .line2 {
-      display: block;
-      -webkit-text-stroke: 1px var(--text);
-      color: transparent;
-    }
-    .hero-bottom {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 40px;
-    }
-    .hero-desc {
-      max-width: 480px;
-      font-size: 15px;
-      line-height: 1.7;
-      color: #888;
-      font-family: 'DM Mono', monospace;
-    }
-    .hero-desc strong { color: var(--text); font-weight: 400; }
-    .hero-cta {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-    }
-    .btn-primary {
-      background: var(--accent);
-      color: #0a0a0a;
-      padding: 14px 28px;
-      font-family: 'Syne', sans-serif;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      text-decoration: none;
-      transition: all 0.2s;
-      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-    }
-    .btn-primary:hover {
-      background: var(--text);
-      transform: translateY(-2px);
-    }
-    .btn-secondary {
-      font-family: 'DM Mono', monospace;
-      font-size: 12px;
-      color: var(--muted);
-      text-decoration: none;
-      letter-spacing: 0.06em;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 2px;
-      transition: color 0.2s, border-color 0.2s;
-    }
-    .btn-secondary:hover { color: var(--text); border-color: var(--muted); }
-
-    /* MARQUEE */
-    .marquee-wrap {
-      overflow: hidden;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 16px 0;
-      background: var(--surface);
-    }
-    .marquee-track {
-      display: flex;
-      white-space: nowrap;
-      animation: marquee 22s linear infinite;
-    }
-    .marquee-track span {
-      font-family: 'DM Mono', monospace;
-      font-size: 12px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      padding: 0 40px;
-    }
-    .marquee-track span.accent { color: var(--accent); }
-    @keyframes marquee {
-      from { transform: translateX(0); }
-      to { transform: translateX(-50%); }
-    }
-
-    /* SECTIONS COMMON */
-    section { padding: 100px 60px; }
-    .section-label {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      color: var(--accent);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 60px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .section-label::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-      max-width: 80px;
-    }
-
-    /* ABOUT */
-    #about {
-      border-top: 1px solid var(--border);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: start;
-    }
-    .about-heading {
-      font-size: clamp(36px, 4vw, 54px);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-    }
-    .about-heading em {
-      font-style: normal;
-      color: var(--accent);
-    }
-    .about-text {
-      font-family: 'DM Mono', monospace;
-      font-size: 14px;
-      line-height: 1.9;
-      color: #777;
-    }
-    .about-text p + p { margin-top: 20px; }
-    .about-text strong { color: var(--text); font-weight: 400; }
-    .about-text a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s; }
-    .about-text a:hover { border-color: var(--accent); }
-    .stats-row {
-      display: flex;
-      gap: 40px;
-      margin-top: 48px;
-      padding-top: 40px;
-      border-top: 1px solid var(--border);
-    }
-    .stat-item .num {
-      font-size: 40px;
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      color: var(--text);
-      line-height: 1;
-    }
-    .stat-item .num span { color: var(--accent); }
-    .stat-item .label {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      color: var(--muted);
-      letter-spacing: 0.08em;
-      margin-top: 6px;
-    }
-
-    /* PROJECTS */
-    #projects { border-top: 1px solid var(--border); }
-    .projects-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2px;
-    }
-    .project-card {
-      background: var(--surface);
-      padding: 48px;
-      border: 1px solid var(--border);
-      position: relative;
-      overflow: hidden;
-      transition: border-color 0.3s;
-    }
-    .project-card:hover { border-color: var(--accent); }
-    .project-card.featured {
-      grid-column: span 2;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: center;
-    }
-    .project-card.full-width { grid-column: span 2; }
-    .project-card.muted { background: transparent; }
-    .project-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(200,240,96,0.06) 0%, transparent 60%);
-      opacity: 0;
-      transition: opacity 0.4s;
-      pointer-events: none;
-    }
-    .project-card:hover::before { opacity: 1; }
-    .project-num {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      color: var(--muted);
-      letter-spacing: 0.1em;
-      margin-bottom: 24px;
-    }
-    .project-title {
-      font-size: 28px;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      margin-bottom: 16px;
-      line-height: 1.1;
-    }
-    .project-desc {
-      font-family: 'DM Mono', monospace;
-      font-size: 13px;
-      line-height: 1.8;
-      color: #666;
-      margin-bottom: 32px;
-    }
-    .project-desc a { color: var(--accent); text-decoration: none; }
-    .project-desc a:hover { text-decoration: underline; }
-    .tech-stack {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 32px;
-    }
-    .tag {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.08em;
-      padding: 5px 10px;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      text-transform: uppercase;
-      transition: all 0.2s;
-    }
-    .project-card:hover .tag {
-      border-color: rgba(200,240,96,0.3);
-      color: #999;
-    }
-    .project-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-family: 'DM Mono', monospace;
-      font-size: 12px;
-      color: var(--accent);
-      text-decoration: none;
-      letter-spacing: 0.06em;
-      transition: gap 0.2s;
-    }
-    .project-link:hover { gap: 14px; }
-    .project-link.disabled { color: var(--muted); cursor: default; }
-    .project-visual {
-      height: 260px;
-      border: 1px solid rgba(232,197,71,0.15);
-      position: relative;
-      overflow: hidden;
-      background: #0a0a0a;
-    }
-    .project-visual img {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: top;
-      display: block;
-    }
-    .project-visual a {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-    }
-    .project-visual-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(10,10,10,0.5) 0%, transparent 60%);
-      z-index: 1;
-    }
-
-    /* SKILLS */
-    #skills {
-      border-top: 1px solid var(--border);
-      background: var(--surface);
-    }
-    .skills-layout {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 80px;
-      align-items: start;
-    }
-    .skills-intro {
-      font-size: 32px;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.15;
-    }
-    .skills-intro em { font-style: normal; color: var(--accent); }
-    .skills-groups {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 40px;
-    }
-    .skill-group-title {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      color: var(--accent);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 20px;
-    }
-    .skill-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .skill-list li {
-      font-size: 15px;
-      font-weight: 600;
-      color: #aaa;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      transition: color 0.2s;
-    }
-    .skill-list li:hover { color: var(--text); }
-    .skill-list li::before {
-      content: '';
-      width: 4px; height: 4px;
-      background: var(--border);
-      border-radius: 50%;
-      flex-shrink: 0;
-      transition: background 0.2s;
-    }
-    .skill-list li:hover::before { background: var(--accent); }
-    .skills-philosophy {
-      margin-top: 40px;
-      padding-top: 24px;
-      border-top: 1px solid var(--border);
-      font-family: 'DM Mono', monospace;
-      font-size: 13px;
-      color: #888;
-      letter-spacing: 0.06em;
-      line-height: 1.7;
-    }
-    .skills-philosophy strong { color: var(--accent); font-weight: 400; }
-
-    /* WRITING */
-    #writing {
-      border-top: 1px solid var(--border);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: start;
-    }
-    .writing-intro {
-      font-family: 'DM Mono', monospace;
-      font-size: 14px;
-      line-height: 1.9;
-      color: #777;
-      margin-top: 32px;
-    }
-    .writing-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .writing-list a {
-      display: block;
-      padding: 24px 0;
-      border-bottom: 1px solid var(--border);
-      color: var(--text);
-      text-decoration: none;
-      transition: color 0.2s, border-color 0.2s, padding-left 0.2s;
-    }
-    .writing-list a:hover {
-      color: var(--accent);
-      border-color: var(--accent);
-      padding-left: 8px;
-    }
-    .writing-title {
-      font-size: 17px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      line-height: 1.4;
-    }
-    .writing-pub {
-      display: block;
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      color: var(--muted);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-top: 8px;
-    }
-
-    /* RESUME */
-    #resume { border-top: 1px solid var(--border); }
-    .resume-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 40px;
-      flex-wrap: wrap;
-      margin-bottom: 40px;
-    }
-    .resume-heading {
-      font-size: clamp(32px, 4vw, 48px);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-    }
-    .resume-heading em { font-style: normal; color: var(--accent); }
-    .resume-frame-wrap {
-      position: relative;
-      width: 100%;
-      max-width: 900px;
-      margin: 0 auto;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      overflow: hidden;
-    }
-    .resume-frame-wrap iframe {
-      width: 100%;
-      height: 1000px;
-      border: none;
-      display: block;
-      background: #fff;
-    }
-
-    /* CONTACT */
-    #contact {
-      border-top: 1px solid var(--border);
-      text-align: center;
-      padding: 120px 60px;
-    }
-    .contact-pre {
-      font-family: 'DM Mono', monospace;
-      font-size: 12px;
-      color: var(--muted);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 32px;
-    }
-    .contact-heading {
-      font-size: clamp(48px, 8vw, 110px);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      line-height: 0.9;
-      margin-bottom: 48px;
-    }
-    .contact-heading span {
-      display: block;
-      -webkit-text-stroke: 1px var(--text);
-      color: transparent;
-    }
-    .contact-links {
-      display: flex;
-      gap: 24px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-top: 48px;
-    }
-    .contact-link {
-      font-family: 'DM Mono', monospace;
-      font-size: 12px;
-      letter-spacing: 0.08em;
-      color: var(--muted);
-      text-decoration: none;
-      padding: 12px 24px;
-      border: 1px solid var(--border);
-      text-transform: uppercase;
-      transition: all 0.2s;
-    }
-    .contact-link:hover {
-      color: var(--accent);
-      border-color: var(--accent);
-      background: rgba(200,240,96,0.05);
-    }
-
-    /* FOOTER */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 28px 60px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    footer span {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      color: var(--muted);
-      letter-spacing: 0.06em;
-    }
-
-    /* ANIMATIONS */
-    .fade-up {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .fade-up.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    @media (max-width: 900px) {
-      nav { padding: 24px 30px; }
-      section { padding: 70px 30px; }
-      #hero { padding: 0 30px 60px; }
-      #about, .skills-layout, #writing { grid-template-columns: 1fr; gap: 40px; }
-      .projects-grid, .project-card.featured { grid-template-columns: 1fr; grid-column: span 1; }
-      .skills-groups { grid-template-columns: 1fr 1fr; }
-      .hero-bottom { flex-direction: column; align-items: flex-start; }
-      footer { flex-direction: column; gap: 12px; text-align: center; }
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Add .js before first paint so reveal states apply without a flash;
+       without JS, content stays fully visible (progressive enhancement). -->
+  <script>document.documentElement.classList.add("js");</script>
 </head>
 <body>
-
-<!-- NAV -->
-  <nav>
-    <a href="#" class="nav-logo">AK<span>.</span></a>
-    <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#writing">Writing</a></li>
-      <li><a href="#resume">Resume</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
-
-  <!-- HERO -->
-  <section id="hero">
-    <div class="hero-grid-bg"></div>
-    <div class="hero-tag">Sophomore CS @ Rutgers</div>
-    <h1 class="hero-name">
-      Arssh<br>
-      <span class="line2">Kumar</span>
-    </h1>
-    <div class="hero-bottom">
-      <p class="hero-desc">
-        I build AI-integrated products end-to-end — research engines, voice journals, document intelligence platforms.
-      </p>
-      <div class="hero-cta">
-        <a href="#projects" class="btn-primary">View My Work</a>
-        <a href="#contact" class="btn-secondary">Get In Touch →</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- MARQUEE -->
-  <div class="marquee-wrap">
-    <div class="marquee-track">
-      <span>React</span><span class="accent">✦</span>
-      <span>FastAPI</span><span class="accent">✦</span>
-      <span>SwiftUI</span><span class="accent">✦</span>
-      <span>OpenRouter</span><span class="accent">✦</span>
-      <span>ChromaDB</span><span class="accent">✦</span>
-      <span>Postgres</span><span class="accent">✦</span>
-      <span>SSE Streaming</span><span class="accent">✦</span>
-      <span>Spec-First</span><span class="accent">✦</span>
-      <span>React</span><span class="accent">✦</span>
-      <span>FastAPI</span><span class="accent">✦</span>
-      <span>SwiftUI</span><span class="accent">✦</span>
-      <span>OpenRouter</span><span class="accent">✦</span>
-      <span>ChromaDB</span><span class="accent">✦</span>
-      <span>Postgres</span><span class="accent">✦</span>
-      <span>SSE Streaming</span><span class="accent">✦</span>
-      <span>Spec-First</span><span class="accent">✦</span>
-    </div>
+  <!-- Background depth plane: drifting dot grid + accent glow (parallax) -->
+  <div class="bg" aria-hidden="true">
+    <div class="bg__grid"></div>
+    <div class="bg__glow"></div>
   </div>
 
-  <!-- ABOUT -->
-  <section id="about">
-    <div class="fade-up">
-      <div class="section-label">About</div>
-      <h2 class="about-heading">
-        What I<br><em>build.</em>
-      </h2>
-      <div class="stats-row">
-        <div class="stat-item">
-          <div class="num">169</div>
-          <div class="label">Tests in Quarry suite</div>
-        </div>
-        <div class="stat-item">
-          <div class="num">5</div>
-          <div class="label">Published columns</div>
-        </div>
-        <div class="stat-item">
-          <div class="num">20<span>28</span></div>
-          <div class="label">Expected graduation</div>
-        </div>
-      </div>
-    </div>
-    <div class="fade-up" style="padding-top: 80px;">
-      <div class="about-text">
-        <p>I'm a sophomore at <strong>Rutgers University</strong> studying Computer Science. I ship AI-integrated SaaS — full-stack, opinionated, end-to-end. Architecture decisions, code, deploy. All mine.</p>
-        <p>My current focus is <strong>Quarry</strong>, a multi-model research engine for journalists with contradiction detection, source provenance, and a custom finance query language (QFL). Before that, I built <strong>PDFGeek</strong> during my software engineering internship at TrialX, and <strong>FileGeek</strong>, the document intelligence platform Quarry evolved out of.</p>
-        <p>I'm also building <strong>Engel</strong>, a SwiftUI iOS journaling app structured as a digital examen rather than a mood tracker.</p>
-        <p>I write a recurring column on technology and AI policy for <strong>Rising Kashmir</strong> and have published on <strong>News18</strong>, mostly on unintended consequences in tech and national security.</p>
-        <p>My workflow is <strong>Claude Code</strong>, <strong>Cursor</strong>, <strong>Antigravity</strong>, and <strong>Warp</strong> — spec-first, one feature at a time, plan mode before implementation.</p>
-      </div>
-    </div>
-  </section>
+  <!-- Top scroll-progress hairline (behavior 3) -->
+  <div class="progress" id="progress" aria-hidden="true"></div>
 
-  <!-- PROJECTS -->
-  <section id="projects">
-    <div class="section-label">Work</div>
-    <div class="projects-grid">
+  <!-- Skip to content (a11y) -->
+  <a class="skip-link" href="#content">Skip to content</a>
 
-      <!-- FEATURED: Quarry -->
-      <div class="project-card featured fade-up" id="card-quarry">
-        <div>
-          <div class="project-num">01 — Featured</div>
-          <h3 class="project-title">Quarry</h3>
-          <p class="project-desc">
-            An epistemic research engine for journalists. Runs queries across multiple LLMs through OpenRouter, surfaces contradictions between sources, tracks provenance, and ships with QFL — a custom query language I designed for finance research. SSE streaming, multi-tab UI, 169-test suite.
-          </p>
-          <div class="tech-stack">
-            <span class="tag">React 18</span>
-            <span class="tag">FastAPI</span>
-            <span class="tag">ChromaDB</span>
-            <span class="tag">OpenRouter</span>
-            <span class="tag">SSE</span>
-            <span class="tag">Postgres</span>
-          </div>
-          <div style="display:flex; gap: 24px; align-items: center; flex-wrap: wrap;">
-            <a href="https://quarry-one.vercel.app/signup" target="_blank" class="project-link" style="color: var(--accent); font-weight: 700;">Live Demo →</a>
-            <a href="https://github.com/A-Kumar14/Quarry" target="_blank" class="project-link">View on GitHub →</a>
-          </div>
-        </div>
-        <div class="project-visual">
-          <img src="image.png" alt="Quarry Preview" />
-          <div class="project-visual-overlay"></div>
-          <a href="https://quarry-one.vercel.app/signup" target="_blank" aria-label="Open Quarry"></a>
-        </div>
-      </div>
+  <!-- Day/Night toggle (behavior 4) -->
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-pressed="false">
+    <span class="theme-toggle__label" data-theme-label>Night</span>
+  </button>
 
-      <!-- 02: Engel -->
-      <div class="project-card fade-up" id="card-engel">
-        <div class="project-num">02</div>
-        <h3 class="project-title">Engel</h3>
-        <p class="project-desc">
-          A SwiftUI iOS app structured as a digital examen, not a mood tracker. Two overlapping globes (positive/negative) capture 30-second voice memos. AI auto-tags silently. The forced binary sort is the reflective practice. The app surfaces consequences and patterns inline rather than as weekly drips.
-        </p>
-        <div class="tech-stack">
-          <span class="tag">SwiftUI</span>
-          <span class="tag">FastAPI</span>
-          <span class="tag">Postgres</span>
-          <span class="tag">Whisper</span>
-          <span class="tag">Claude Code</span>
-        </div>
-        <span class="project-link disabled">In Development</span>
-      </div>
+  <!-- Left section tracker — a real index <nav> (a11y) -->
+  <nav class="rail" aria-label="Section index">
+    <p class="rail__title">Index</p>
+    <ol class="rail__list">
+      <span class="rail__marker" aria-hidden="true"></span>
+      <li><a href="#intro"      data-rail="intro"><span class="rail__num">00</span><span class="rail__name">Intro</span></a></li>
+      <li><a href="#profile"    data-rail="profile"><span class="rail__num">01</span><span class="rail__name">Profile</span></a></li>
+      <li><a href="#experience" data-rail="experience"><span class="rail__num">02</span><span class="rail__name">Experience</span></a></li>
+      <li><a href="#work"       data-rail="work"><span class="rail__num">03</span><span class="rail__name">Projects</span></a></li>
+      <li><a href="#writing"    data-rail="writing"><span class="rail__num">04</span><span class="rail__name">Writing</span></a></li>
+      <li><a href="#off"        data-rail="off"><span class="rail__num">05</span><span class="rail__name">Off-Clock</span></a></li>
+      <li><a href="#toolkit"    data-rail="toolkit"><span class="rail__num">06</span><span class="rail__name">Toolkit</span></a></li>
+      <li><a href="#now"        data-rail="now"><span class="rail__num">07</span><span class="rail__name">Now</span></a></li>
+      <li><a href="#contact"    data-rail="contact"><span class="rail__num">08</span><span class="rail__name">Contact</span></a></li>
+    </ol>
+  </nav>
 
-      <!-- 03: PDFGeek -->
-      <div class="project-card fade-up" id="card-pdfgeek">
-        <div class="project-num">03</div>
-        <h3 class="project-title">PDFGeek (TrialX)</h3>
-        <p class="project-desc">
-          Built during my software engineering internship at TrialX. Document processing and intelligence platform for clinical trial workflows — production Python pipeline parsing trial documents at scale, deployed by a four-engineer team.
-        </p>
-        <div class="tech-stack">
-          <span class="tag">FastAPI</span>
-          <span class="tag">Python</span>
-          <span class="tag">PyMuPDF</span>
-          <span class="tag">REST APIs</span>
-        </div>
-      </div>
+  <main id="content" class="content">
 
-      <!-- 04: FileGeek -->
-      <div class="project-card fade-up" id="card-fg">
-        <div class="project-num">04</div>
-        <h3 class="project-title">FileGeek</h3>
-        <p class="project-desc">
-          The document intelligence platform Quarry evolved out of. Zero-hallucination enforcement, semantic search, multi-provider AI engine. Built solo from scratch.
-        </p>
-        <div class="tech-stack">
-          <span class="tag">FastAPI</span>
-          <span class="tag">React</span>
-          <span class="tag">ChromaDB</span>
-          <span class="tag">GPT-4o</span>
-          <span class="tag">Gemini</span>
-          <span class="tag">SSE</span>
-        </div>
-        <div style="display:flex; gap: 24px; align-items: center; flex-wrap: wrap;">
-          <a href="https://filegeek.vercel.app" target="_blank" class="project-link" style="color: var(--accent); font-weight: 700;">Live Demo →</a>
-          <a href="https://github.com/A-Kumar14/FileGeek" target="_blank" class="project-link">View on GitHub →</a>
-        </div>
-      </div>
-
-      <!-- Earlier work -->
-      <div class="project-card full-width muted fade-up" id="card-earlier">
-        <div class="project-num">Earlier work</div>
-        <p class="project-desc" style="margin: 0;">
-          Stock Market AI (pandas, scikit-learn, TensorFlow), iOS football app (Swift, Sportmonks API), Soccer Data Analyzer, Note Manager (JavaFX). On <a href="https://github.com/A-Kumar14" target="_blank">GitHub</a>.
-        </p>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- SKILLS -->
-  <section id="skills">
-    <div class="section-label">Skills & Stack</div>
-    <div class="skills-layout fade-up">
-      <div>
-        <h2 class="skills-intro">Stack I<br><em>ship</em><br>with.</h2>
-      </div>
-      <div>
-        <div class="skills-groups">
-          <div>
-            <div class="skill-group-title">Languages</div>
-            <ul class="skill-list">
-              <li>Python</li>
-              <li>JavaScript / TypeScript</li>
-              <li>Swift</li>
-              <li>C</li>
-              <li>SQL</li>
-            </ul>
-          </div>
-          <div>
-            <div class="skill-group-title">Frameworks</div>
-            <ul class="skill-list">
-              <li>React 18</li>
-              <li>FastAPI</li>
-              <li>SwiftUI</li>
-              <li>Node.js</li>
-            </ul>
-          </div>
-          <div>
-            <div class="skill-group-title">Infra & Data</div>
-            <ul class="skill-list">
-              <li>Postgres</li>
-              <li>ChromaDB</li>
-              <li>SSE / Async</li>
-              <li>REST</li>
-              <li>Git</li>
-            </ul>
-          </div>
-          <div>
-            <div class="skill-group-title">AI</div>
-            <ul class="skill-list">
-              <li>OpenRouter</li>
-              <li>OpenAI API</li>
-              <li>Gemini</li>
-              <li>Claude API</li>
-              <li>Whisper</li>
-              <li>Custom prompt pipelines</li>
-            </ul>
-          </div>
-          <div>
-            <div class="skill-group-title">Workflow</div>
-            <ul class="skill-list">
-              <li>Claude Code</li>
-              <li>Cursor</li>
-              <li>Antigravity</li>
-              <li>Warp</li>
-            </ul>
-          </div>
-        </div>
-        <p class="skills-philosophy"><strong>Spec-first.</strong> Plan mode before implementation.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- WRITING -->
-  <section id="writing">
-    <div class="fade-up">
-      <div class="section-label">Writing</div>
-      <h2 class="about-heading">On tech<br>& <em>policy.</em></h2>
-      <p class="writing-intro">
-        I write on technology, AI policy, and unintended consequences in national security infrastructure. Recurring column in Rising Kashmir; bylines in News18.
+    <!-- 00 — INTRO / HERO -->
+    <section id="intro" class="section section--intro" aria-labelledby="intro-h">
+      <p class="kicker reveal"><span class="kicker__num">00</span> Intro</p>
+      <h1 id="intro-h" class="hero">
+        <span class="hero__line"><span class="hero__inner">I build</span></span>
+        <span class="hero__line"><span class="hero__inner">I write</span></span>
+      </h1>
+      <p class="hero__thesis reveal">
+        Two verbs, one discipline — I build the thing end to end, then write down
+        <em>what it costs us</em>.
       </p>
-    </div>
-    <div class="fade-up" style="padding-top: 80px;">
-      <ul class="writing-list">
-        <li>
-          <a href="https://risingkashmir.com/the-inference-trap-ai-capex-boom-locking-in-permanent-dependency" target="_blank">
-            <span class="writing-title">The Inference Trap: AI Capex Boom Locking In Permanent Dependency</span>
-            <span class="writing-pub">Rising Kashmir</span>
+      <p class="lede reveal">
+        Two verbs, one habit of mind. The work below is catalogued like entries in an
+        index — each one a thing made or a thing argued, with the depth to back it up.
+      </p>
+      <p class="reveal">
+        <a class="link-arrow" href="#contact">Get in touch <span aria-hidden="true">→</span></a>
+      </p>
+
+      <dl class="vitals reveal" aria-label="At a glance">
+        <div class="vitals__item">
+          <dt>Currently</dt>
+          <dd>Building Engel · Growth at Runway</dd>
+        </div>
+        <div class="vitals__item">
+          <dt>Writing</dt>
+          <dd>News18 · Rising Kashmir</dd>
+        </div>
+        <div class="vitals__item">
+          <dt>Based</dt>
+          <dd>New Brunswick, NJ</dd>
+        </div>
+      </dl>
+    </section>
+
+    <!-- 01 — PROFILE -->
+    <section id="profile" class="section" aria-labelledby="profile-h">
+      <p class="kicker reveal"><span class="kicker__num">01</span> Profile</p>
+      <h2 id="profile-h" class="section__title reveal">A systems mind in the spec-to-ship middle.</h2>
+      <div class="profile-grid">
+        <figure class="portrait reveal">
+          <img src="portrait.jpg" alt="Portrait of Arssh Kumar" width="594" height="686" loading="lazy" />
+          <figcaption>Arssh Kumar · New Brunswick, NJ</figcaption>
+        </figure>
+        <div class="prose">
+          <p class="reveal">
+            I'm a Computer Science junior at Rutgers University–New Brunswick
+            (B.S., expected May 2028) and a full-stack AI product builder.
+          </p>
+          <p class="reveal">
+            I think in systems — interfaces, invariants, the way one decision ripples
+            through the rest. What I like most is owning the middle: the stretch between
+            a rough spec and a thing that actually ships. Most of what I build leans on
+            AI under the hood, end to end.
+          </p>
+          <p class="reveal">
+            That ownership is the throughline of everything here. Build it end to end,
+            then write about what it means.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 — EXPERIENCE -->
+    <section id="experience" class="section" aria-labelledby="experience-h">
+      <p class="kicker reveal"><span class="kicker__num">02</span> Experience</p>
+      <h2 id="experience-h" class="section__title reveal">Where I've shipped on someone else's clock.</h2>
+
+      <article class="entry reveal">
+        <header class="entry__head">
+          <h3 class="entry__title">Runway</h3>
+          <p class="entry__meta">
+            <span>Growth Intern</span>
+            <span class="entry__sep">/</span>
+            <span>Remote</span>
+            <span class="entry__sep">/</span>
+            <span class="entry__status entry__status--build">Jun 2026 &mdash; Present</span>
+          </p>
+        </header>
+        <p class="entry__body">
+          Driving user acquisition for an AI-powered job-search platform serving
+          35,000+ students across 750+ campuses, reporting directly to the founder and
+          CEO. I run a content-led growth campaign across LinkedIn, Reddit, and campus
+          channels — targeting 100 weekly signups against a peer-intern average of
+          roughly 50 — built on a weekly content operating system: batch-produced posts
+          on a fixed Friday cycle through a founder approval workflow, tuned for hooks
+          and first-hour engagement to compound reach over a 12-week program.
+        </p>
+        <ul class="stack" aria-label="Focus">
+          <li>Growth</li>
+          <li>Content strategy</li>
+          <li>LinkedIn / Reddit</li>
+        </ul>
+      </article>
+
+      <article class="entry reveal">
+        <header class="entry__head">
+          <h3 class="entry__title">TrialX</h3>
+          <p class="entry__meta">
+            <span>Software Engineering Intern</span>
+            <span class="entry__sep">/</span>
+            <span>New York, NY</span>
+            <span class="entry__sep">/</span>
+            <span class="entry__status">Jun &mdash; Aug 2025</span>
+          </p>
+        </header>
+        <p class="entry__body">
+          Engineered a production Python PDF-extraction pipeline (PyMuPDF, pdfplumber)
+          deployed by a four-engineer team to parse clinical-trial documents at scale,
+          and built REST endpoints for automated data ingestion that replaced manual
+          document processing. Shipped in an Agile environment — sprint planning, peer
+          code review, Git-based version control.
+        </p>
+        <ul class="stack" aria-label="Stack">
+          <li>Python</li>
+          <li>PyMuPDF</li>
+          <li>pdfplumber</li>
+          <li>REST APIs</li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- 03 — PROJECTS -->
+    <section id="work" class="section" aria-labelledby="work-h">
+      <p class="kicker reveal"><span class="kicker__num">03</span> Projects</p>
+      <h2 id="work-h" class="section__title reveal">Things I've built, with honest status.</h2>
+
+      <article class="entry reveal">
+        <header class="entry__head">
+          <h3 class="entry__title">Engel</h3>
+          <p class="entry__meta">
+            <span>iOS journaling app</span>
+            <span class="entry__sep">/</span>
+            <span>2026 &mdash; Present</span>
+            <span class="entry__sep">/</span>
+            <span class="entry__status entry__status--build">In build</span>
+          </p>
+        </header>
+        <p class="entry__body">
+          A local-first iOS journaling app structured as a digital examen — 30-second voice
+          memos sorted into binary positive / negative globes, with silent AI auto-tagging
+          and pattern surfacing at write time. Local persistence runs on SwiftData alongside
+          a FastAPI service for Whisper transcription and tagging; I designed the REST
+          contracts between the Swift client and the Python service, and shipped the full UI
+          — drag-to-sort, voice capture, animated globe light fields, and an inline
+          consequence-surfacing chat over your own entries.
+        </p>
+        <ul class="stack" aria-label="Stack">
+          <li>SwiftUI</li>
+          <li>SwiftData</li>
+          <li>FastAPI</li>
+          <li>Whisper</li>
+          <li>Claude Code</li>
+        </ul>
+        <p class="entry__links">
+          <a href="https://a-kumar14.github.io/engel/" rel="noopener" target="_blank">Live demo</a>
+          <a href="https://github.com/A-Kumar14/engel" rel="noopener" target="_blank">Source</a>
+        </p>
+      </article>
+
+      <article class="entry reveal">
+        <header class="entry__head">
+          <h3 class="entry__title">Quarry</h3>
+          <p class="entry__meta">
+            <span>AI research platform</span>
+            <span class="entry__sep">/</span>
+            <span>2025 &mdash; Present</span>
+            <span class="entry__sep">/</span>
+            <span class="entry__status entry__status--build">Shipped</span>
+          </p>
+        </header>
+        <p class="entry__body">
+          A full-stack research platform built from scratch: a React&nbsp;18 + Material UI
+          front end over a FastAPI back end via REST and SSE streaming, locked by a
+          169-test integration suite and deployed to Railway with continuous deployment.
+          A four-stage pipeline — claim extraction, reconciliation, brief generation,
+          contradiction detection — runs across OpenAI and Gemini through OpenRouter. It
+          also ships a Finance Terminal with live watchlists and 1D–5Y charts, QFL (a
+          custom query language), and citations in APA, MLA, Chicago, and BibTeX.
+        </p>
+        <ul class="stack" aria-label="Stack">
+          <li>React 18</li>
+          <li>FastAPI</li>
+          <li>SSE</li>
+          <li>ChromaDB</li>
+          <li>Material UI</li>
+          <li>Railway</li>
+        </ul>
+        <p class="entry__links">
+          <a href="https://quarry-one.vercel.app" rel="noopener" target="_blank">Live demo</a>
+          <a href="https://github.com/A-Kumar14/quarry" rel="noopener" target="_blank">Source</a>
+        </p>
+      </article>
+
+      <article class="entry reveal">
+        <header class="entry__head">
+          <h3 class="entry__title">FileGeek</h3>
+          <p class="entry__meta">
+            <span>Document Q&amp;A</span>
+            <span class="entry__sep">/</span>
+            <span>2024 &mdash; 2025</span>
+            <span class="entry__sep">/</span>
+            <span class="entry__status entry__status--archived">Archived</span>
+          </p>
+        </header>
+        <p class="entry__body">
+          A full-stack document question-answering app — ask questions of a PDF and get
+          answers in conversation. SSE streaming and ChromaDB semantic search cut search
+          time from minutes to under two seconds (~300&nbsp;ms first byte), and an agentic
+          retrieval pipeline lifted accuracy ~40% over naive full-text search. An early
+          build, kept here for the record.
+        </p>
+        <ul class="stack" aria-label="Stack">
+          <li>FastAPI</li>
+          <li>React</li>
+          <li>ChromaDB</li>
+          <li>SSE</li>
+        </ul>
+        <p class="entry__links">
+          <a href="https://pdfgeek.vercel.app" rel="noopener" target="_blank">Live demo</a>
+          <a href="https://github.com/A-Kumar14/FileGeek" rel="noopener" target="_blank">Source</a>
+        </p>
+      </article>
+    </section>
+
+    <!-- 04 — WRITING -->
+    <section id="writing" class="section" aria-labelledby="writing-h">
+      <p class="kicker reveal"><span class="kicker__num">04</span> Writing</p>
+      <h2 id="writing-h" class="section__title reveal">Columns on technology and its consequences.</h2>
+      <p class="prose reveal">
+        I publish columns in <strong>News18</strong> and <strong>Rising Kashmir</strong> —
+        on technology, geopolitics, and national security, and what they do to the people
+        on the other side of them.
+      </p>
+
+      <ol class="writing-list">
+        <li class="entry entry--link reveal">
+          <a class="entry__title-link" href="https://www.news18.com/byline/arssh-kumar-28582.html" rel="noopener" target="_blank">
+            Read the columns in News18 <span aria-hidden="true">→</span>
           </a>
+          <p class="entry__meta"><span class="entry__source">News18 · Technology &amp; national security</span></p>
+        </li>
+        <li class="entry entry--link reveal">
+          <a class="entry__title-link" href="https://risingkashmir.com/author/arssh-kumar/" rel="noopener" target="_blank">
+            Read the columns in Rising Kashmir <span aria-hidden="true">→</span>
+          </a>
+          <p class="entry__meta"><span class="entry__source">Rising Kashmir · Technology &amp; geopolitics</span></p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 05 — OFF THE CLOCK -->
+    <section id="off" class="section" aria-labelledby="off-h">
+      <p class="kicker reveal"><span class="kicker__num">05</span> Off the clock</p>
+      <h2 id="off-h" class="section__title reveal">When I'm not at the keyboard.</h2>
+      <ul class="labels reveal" aria-label="Off the clock">
+        <li><span class="labels__tag">Strings</span> Playing my Telecaster.</li>
+        <li><span class="labels__tag">Pitch</span> Playing soccer, and watching more of it.</li>
+        <li><span class="labels__tag">Games</span> Video games, the long-session kind.</li>
+        <li><span class="labels__tag">Cubes</span> Solving Rubik's cubes against the clock.</li>
+        <li><span class="labels__tag">Kitchen</span> Cooking — chef of my own soul.</li>
+        <li><span class="labels__tag">Iron</span> The gym, on the days it counts.</li>
+      </ul>
+    </section>
+
+    <!-- 06 — TOOLKIT -->
+    <section id="toolkit" class="section" aria-labelledby="toolkit-h">
+      <p class="kicker reveal"><span class="kicker__num">06</span> Toolkit</p>
+      <h2 id="toolkit-h" class="section__title reveal">What I reach for.</h2>
+
+      <div class="toolkit">
+        <div class="toolkit__group reveal">
+          <h3 class="toolkit__label">Languages</h3>
+          <ul class="stack">
+            <li>Python</li>
+            <li>JavaScript</li>
+            <li>TypeScript</li>
+            <li>Swift</li>
+            <li>PHP</li>
+            <li>SQL</li>
+          </ul>
+        </div>
+        <div class="toolkit__group reveal">
+          <h3 class="toolkit__label">Frontend &amp; Mobile</h3>
+          <ul class="stack">
+            <li>React 18</li>
+            <li>React Native</li>
+            <li>SwiftUI / SwiftData</li>
+            <li>Material UI</li>
+            <li>Tailwind CSS</li>
+            <li>Vite</li>
+          </ul>
+        </div>
+        <div class="toolkit__group reveal">
+          <h3 class="toolkit__label">Backend &amp; Data</h3>
+          <ul class="stack">
+            <li>FastAPI / Flask</li>
+            <li>REST &amp; SSE</li>
+            <li>PostgreSQL</li>
+            <li>ChromaDB</li>
+            <li>WordPress / ACF Pro</li>
+            <li>NumPy / pandas</li>
+          </ul>
+        </div>
+        <div class="toolkit__group reveal">
+          <h3 class="toolkit__label">AI &amp; ML</h3>
+          <ul class="stack">
+            <li>Claude / OpenAI / Gemini APIs</li>
+            <li>Whisper</li>
+            <li>OpenRouter</li>
+            <li>RAG &amp; retrieval</li>
+            <li>scikit-learn / TensorFlow</li>
+          </ul>
+        </div>
+        <div class="toolkit__group reveal">
+          <h3 class="toolkit__label">Practice</h3>
+          <ul class="stack">
+            <li>Spec-first development</li>
+            <li>Agile &amp; sprint planning</li>
+            <li>Peer code review</li>
+            <li>Unit &amp; integration testing</li>
+            <li>Writing</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 — NOW -->
+    <section id="now" class="section" aria-labelledby="now-h">
+      <p class="kicker reveal"><span class="kicker__num">07</span> Now</p>
+      <h2 id="now-h" class="section__title reveal">Now <span class="section__date">— Jun '26</span></h2>
+      <dl class="now-list">
+        <div class="now-list__row now-list__row--lead reveal">
+          <dt>Building</dt>
+          <dd>Engel, and growth at Runway.</dd>
+        </div>
+        <div class="now-list__row reveal">
+          <dt>Studying</dt>
+          <dd>Intro to Artificial Intelligence (in progress), after Data Structures,
+            Computer Architecture, Discrete Math, and Linear Algebra.</dd>
+        </div>
+        <div class="now-list__row reveal">
+          <dt>Writing</dt>
+          <dd>Drafting the next column on technology and national security.</dd>
+        </div>
+      </dl>
+    </section>
+
+    <!-- 08 — CONTACT -->
+    <section id="contact" class="section" aria-labelledby="contact-h">
+      <p class="kicker reveal"><span class="kicker__num">08</span> Contact</p>
+      <h2 id="contact-h" class="section__title reveal">Open to internships, roles, and writing.</h2>
+      <p class="prose reveal">
+        I'm looking for internships and roles where I can own the spec-to-ship middle —
+        and I'm always up for writing.
+      </p>
+      <ul class="channels reveal" aria-label="Contact channels">
+        <li>
+          <span class="channels__label">Email</span>
+          <a href="mailto:arssh.kumar10@gmail.com">arssh.kumar10@gmail.com</a>
         </li>
         <li>
-          <a href="https://risingkashmir.com/space-travel-evolution-when-ai-leaves-earth" target="_blank">
-            <span class="writing-title">Space Travel Evolution: When AI Leaves Earth</span>
-            <span class="writing-pub">Rising Kashmir</span>
-          </a>
+          <span class="channels__label">Phone</span>
+          <a href="tel:+19082082855">908-208-2855</a>
         </li>
         <li>
-          <a href="https://www.news18.com/byline/arssh-kumar-28582.html" target="_blank">
-            <span class="writing-title">More clips →</span>
-            <span class="writing-pub">News18 author page</span>
-          </a>
+          <span class="channels__label">GitHub</span>
+          <a href="https://github.com/A-Kumar14" rel="me noopener" target="_blank">github.com/A-Kumar14</a>
+        </li>
+        <li>
+          <span class="channels__label">LinkedIn</span>
+          <a href="https://www.linkedin.com/in/arssh-kumar14/" rel="me noopener" target="_blank">in/arssh-kumar14</a>
+        </li>
+        <li>
+          <span class="channels__label">Located</span>
+          <span>New Brunswick, NJ</span>
         </li>
       </ul>
-    </div>
-  </section>
+    </section>
+  </main>
 
-  <!-- RESUME -->
-  <section id="resume">
-    <div class="section-label">Resume</div>
-    <div class="resume-header fade-up">
-      <h2 class="resume-heading">Resume.</h2>
-      <a href="https://drive.google.com/uc?export=download&id=1XWz0UCEVFkdE8J6fDSeEIA-FZyld5ybF" target="_blank" class="btn-primary">Download PDF →</a>
-    </div>
-    <div class="resume-frame-wrap fade-up">
-      <iframe
-        src="https://drive.google.com/file/d/1XWz0UCEVFkdE8J6fDSeEIA-FZyld5ybF/preview"
-        title="Arssh Kumar Resume"
-        allow="autoplay"
-        allowfullscreen
-      ></iframe>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section id="contact">
-    <p class="contact-pre">Open to opportunities</p>
-    <h2 class="contact-heading">
-      Let's<br><span>Work.</span>
-    </h2>
-    <a href="mailto:arsshdev19@gmail.com" class="btn-primary" style="display:inline-block; margin-top: 8px;">Email Me! →</a>
-    <div class="contact-links">
-      <a href="https://github.com/A-Kumar14" target="_blank" class="contact-link">GitHub</a>
-      <a href="https://www.linkedin.com/in/arssh-kumar14/" target="_blank" class="contact-link">LinkedIn</a>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    <span>© 2026 Arssh Kumar</span>
-    <span>Built with intention.</span>
-    <span>Rutgers University — CS</span>
+  <footer class="footer">
+    <p>Arssh Kumar — <span id="year">2026</span></p>
   </footer>
 
-  <script>
-// Gradient follow on project cards
-    document.querySelectorAll('.project-card').forEach(card => {
-      card.addEventListener('mousemove', e => {
-        const rect = card.getBoundingClientRect();
-        const x = ((e.clientX - rect.left) / rect.width * 100).toFixed(1);
-        const y = ((e.clientY - rect.top) / rect.height * 100).toFixed(1);
-        card.style.setProperty('--mx', x + '%');
-        card.style.setProperty('--my', y + '%');
-      });
-    });
-
-    // Scroll fade-in
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach((entry, i) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => entry.target.classList.add('visible'), i * 80);
-        }
-      });
-    }, { threshold: 0.15 });
-
-    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-  </script>
+  <script src="main.js"></script>
 </body>
 </html>
